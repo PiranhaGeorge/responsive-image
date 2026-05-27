@@ -1,0 +1,9 @@
+/vendor/
+.phpunit.result.cache
+composer.lock
+.phpbench/
+.env
+.idea
+build/
+.cache
+.claude

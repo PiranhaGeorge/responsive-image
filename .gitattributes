@@ -1,0 +1,6 @@
+# Exclude build/test files from the release
+/tests                  export-ignore
+/.git*                  export-ignore
+/mago.toml              export-ignore
+/phpunit.xml            export-ignore
+/UPGRADING.md           export-ignore
