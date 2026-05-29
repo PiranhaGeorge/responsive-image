@@ -13,8 +13,18 @@ composer require tempest/responsive-image
 
 ```php
 use Tempest\ResponsiveImage\ResponsiveImageFactory;
+use Tempest\ResponsiveImage\ResponsiveImageConfig;
 
-$imageFactory = new ResponsiveImageFactory();
+$config = new ResponsiveImageConfig(
+    srcPath: __DIR__ . '/path/to/image/sources',
+    publicPath: __DIR__ . '/../public',
+);
 
-$image = $imageFactory->create('/');
+$imageFactory = new ResponsiveImageFactory($config);
+
+$image = $imageFactory->create('/parrot.jpg');
+
+echo $image->html;
+
+// <img src="/parrot.jpg" srcset="/parrot-1920-1280.jpg 1920w, /parrot-1606-1070.jpg 1606w, /parrot-1214-809.jpg 1214w, /parrot-607-404.jpg 607w">
 ```

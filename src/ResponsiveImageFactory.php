@@ -13,12 +13,13 @@ final readonly class ResponsiveImageFactory
         private ResponsiveImageConfig $config,
     ) {}
 
-    public function create(string $src): Image
+    public function create(string $src, ?string $alt = null): Image
     {
         $image = new Image(
             src: $src,
             srcPath: $this->config->makeSrcPath($src),
             publicPath: $this->config->makePublicPath($src),
+            alt: $alt,
         );
 
         if (! is_file($image->srcPath)) {
