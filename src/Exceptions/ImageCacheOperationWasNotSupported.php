@@ -4,7 +4,4 @@ namespace Tempest\ResponsiveImage;
 
 use Exception;
 
-final class ImageCacheOperationWasNotSupported extends Exception implements ResponsiveImageException
-{
-
-}
+final class ImageCacheOperationWasNotSupported extends Exception implements ResponsiveImageException {}

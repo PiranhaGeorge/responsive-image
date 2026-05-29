@@ -2,8 +2,6 @@
 
 namespace Tempest\ResponsiveImage;
 
-use function Tempest\root_path;
-
 final class SrcSet
 {
     public function __construct(
@@ -15,9 +13,5 @@ final class SrcSet
     public function __toString(): string
     {
         return "{$this->src} {$this->width}w";
-    }
-
-    public string $publicPath {
-        get => root_path('public', $this->src);
     }
 }

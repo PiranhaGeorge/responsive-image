@@ -1,6 +1,6 @@
-# A new package
+# Responsive images with PHP
 
-A catchy one-liner describing what this package does.
+Generate responsive images with PHP and render the correct HTML.
 
 > [!IMPORTANT]
 > This package is still a work in progress! Feel free to open issues.
@@ -8,7 +8,13 @@ A catchy one-liner describing what this package does.
 ## Quickstart
 
 ```sh
-composer require tempest/package
+composer require tempest/responsive-image
 ```
 
-Start building :)
+```php
+use Tempest\ResponsiveImage\ResponsiveImageFactory;
+
+$imageFactory = new ResponsiveImageFactory();
+
+$image = $imageFactory->create('/');
+```
