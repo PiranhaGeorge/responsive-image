@@ -6,6 +6,8 @@ use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\Before;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use Tempest\CommandBus\CommandBus;
+use Tempest\Core\Tempest;
 use Tempest\ResponsiveImage\Exceptions\ImageSourceWasNotFound;
 use Tempest\ResponsiveImage\ResponsiveImageConfig;
 use Tempest\ResponsiveImage\ResponsiveImageFactory;
@@ -42,6 +44,8 @@ final class ResponsiveImageFactoryTest extends TestCase
 
         $this->assertSame('/parrot.jpg', $image->src);
         $this->assertCount(4, $image->srcset);
+
+        $this->assertFileExists($config->makePublicPath($image->src));
 
         foreach ($image->srcset as $srcset) {
             $this->assertFileExists($config->makePublicPath($srcset->src));
@@ -97,5 +101,33 @@ final class ResponsiveImageFactoryTest extends TestCase
         } catch (ImageSourceWasNotFound $e) {
             $this->assertSame('Source for `/not-found.jpg` not found at ' . __DIR__ . '/Fixtures/src/not-found.jpg.', $e->getMessage());
         }
+    }
+
+    #[Test]
+    public function test_async_processing(): void
+    {
+        $container = Tempest::boot(__DIR__ . '/../');
+
+        $fakeCommandBus = new FakeCommandBus();
+        $container->singleton(CommandBus::class, $fakeCommandBus);
+
+        $config = new ResponsiveImageConfig(
+            srcPath: __DIR__ . '/Fixtures/src/',
+            publicPath: __DIR__ . '/Fixtures/public/',
+            async: true,
+        );
+
+        $factory = new ResponsiveImageFactory($config);
+
+        $image = $factory->create('/parrot.jpg');
+
+        $this->assertCount(1, $fakeCommandBus->getHistory());
+
+        $this->assertSame(
+            <<<'HTML'
+            <img src="/parrot.jpg" srcset="/parrot-1920-1280.jpg 1920w, /parrot-1606-1070.jpg 1606w, /parrot-1214-809.jpg 1214w, /parrot-607-404.jpg 607w">
+            HTML,
+            $image->html,
+        );
     }
 }
