@@ -4,27 +4,17 @@ namespace Tempest\ResponsiveImage;
 
 final class Image
 {
-    public string $src;
-
-    public string $srcPath;
-
-    public string $publicPath;
-
-    public ?string $alt = null;
-
-    /** @var SrcSet[] */
-    public array $srcset = [];
-
     public function __construct(
-        string $src,
-        string $srcPath,
-        string $publicPath,
-        ?string $alt = null,
+        public string $src,
+        public string $srcPath,
+        public string $publicPath,
+        public ?string $alt = null,
+        /** @var SrcSet[] */
+        public array $srcset = [],
+        /** @var Size[] */
+        public array $sizes = [],
     ) {
-        $this->src = '/' . ltrim($src, '/');
-        $this->srcPath = $srcPath;
-        $this->publicPath = $publicPath;
-        $this->alt = $alt;
+        $this->src = '/' . ltrim($this->src, '/');
     }
 
     public bool $isScalable {
@@ -43,10 +33,16 @@ final class Image
                 $html .= ' alt="' . $this->alt . '"';
             }
 
-            if ($this->srcset) {
+            if ($this->srcset !== []) {
                 $srcset = array_map(fn (SrcSet $srcset) => (string) $srcset, $this->srcset);
 
                 $html .= ' srcset="' . implode(', ', $srcset) . '"';
+            }
+
+            if ($this->sizes !== []) {
+                $sizes = array_map(fn (Size $sizes) => (string) $sizes, $this->sizes);
+
+                $html .= ' sizes="' . implode(', ', $sizes) . '"';
             }
 
             $html .= '>';
