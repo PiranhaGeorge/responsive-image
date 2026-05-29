@@ -13,13 +13,20 @@ final readonly class ResponsiveImageFactory
         private ResponsiveImageConfig $config,
     ) {}
 
-    public function create(string $src, ?string $alt = null): Image
-    {
+    /** @param Size[] $sizes */
+    public function create(
+        string $src,
+        ?string $alt = null,
+        array $sizes = [],
+        bool $lazy = false,
+    ): Image {
         $image = new Image(
             src: $src,
             srcPath: $this->config->makeSrcPath($src),
             publicPath: $this->config->makePublicPath($src),
             alt: $alt,
+            sizes: $sizes,
+            lazy: $lazy,
         );
 
         if (! is_file($image->srcPath)) {

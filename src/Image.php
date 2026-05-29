@@ -13,6 +13,7 @@ final class Image
         public array $srcset = [],
         /** @var Size[] */
         public array $sizes = [],
+        public bool $lazy = false,
     ) {
         $this->src = '/' . ltrim($this->src, '/');
     }
@@ -21,7 +22,7 @@ final class Image
         get {
             $extension = pathinfo($this->src, PATHINFO_EXTENSION);
 
-            return in_array($extension, ['jpg', 'jpeg', 'png']);
+            return in_array($extension, ['jpg', 'jpeg', 'png'], strict: true);
         }
     }
 
@@ -43,6 +44,10 @@ final class Image
                 $sizes = array_map(fn (Size $sizes) => (string) $sizes, $this->sizes);
 
                 $html .= ' sizes="' . implode(', ', $sizes) . '"';
+            }
+
+            if ($this->lazy) {
+                $html .= ' loading="lazy"';
             }
 
             $html .= '>';
