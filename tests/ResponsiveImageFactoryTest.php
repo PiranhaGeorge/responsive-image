@@ -6,6 +6,7 @@ use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\Before;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use Tempest\ResponsiveImage\Exceptions\ImageSourceWasNotFound;
 use Tempest\ResponsiveImage\ResponsiveImageConfig;
 use Tempest\ResponsiveImage\ResponsiveImageFactory;
 
@@ -51,5 +52,23 @@ final class ResponsiveImageFactoryTest extends TestCase
             HTML,
             $image->html,
         );
+    }
+
+    #[Test]
+    public function test_source_not_found(): void
+    {
+        $config = new ResponsiveImageConfig(
+            srcPath: __DIR__ . '/Fixtures/src/',
+            publicPath: __DIR__ . '/Fixtures/public/',
+            async: false,
+        );
+
+        $factory = new ResponsiveImageFactory($config);
+
+        try {
+            $factory->create('/not-found.jpg');
+        } catch (ImageSourceWasNotFound $e) {
+            $this->assertSame('Source for `/not-found.jpg` not found at ' . __DIR__ . '/Fixtures/src/not-found.jpg.', $e->getMessage());
+        }
     }
 }
