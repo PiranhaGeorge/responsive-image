@@ -3,8 +3,8 @@
 namespace Tempest\ResponsiveImage;
 
 use Tempest\CommandBus\CommandHandler;
-
 use Tempest\ResponsiveImage\Exceptions\ImageSourceWasNotFound;
+
 use function Tempest\CommandBus\command;
 
 final readonly class ResponsiveImageFactory
