@@ -5,26 +5,18 @@ namespace Tempest\ResponsiveImage;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\ImageManager;
 
-final readonly class ResponsiveImageConfig
+final class ResponsiveImageConfig
 {
-    public string $srcPath;
-    public string $publicPath;
-    public bool $async;
-    public bool $cache;
-    public ImageManager $imageManager;
-
     public function __construct(
-        string $srcPath,
-        string $publicPath,
-        bool $async = true,
-        bool $cache = true,
-        ?ImageManager $imageManager = null,
+        public string $srcPath,
+        public string $publicPath,
+        public bool $async = true,
+        public bool $cache = true,
+        public ImageManager $imageManager = new ImageManager(new Driver()),
     ) {
-        $this->srcPath = realpath($srcPath) ?: $srcPath;
-        $this->publicPath = realpath($publicPath) ?: $publicPath;
-        $this->async = $async && class_exists('Tempest\CommandBus\CommandHandler');
-        $this->cache = $cache;
-        $this->imageManager = $imageManager ?? new ImageManager(new Driver());
+        $this->srcPath = realpath($srcPath) ?: $this->srcPath;
+        $this->publicPath = realpath($publicPath) ?: $this->publicPath;
+        $this->async = $this->async && class_exists('Tempest\CommandBus\CommandHandler');
     }
 
     public function makeSrcPath(string $src): string
