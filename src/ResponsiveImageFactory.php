@@ -2,8 +2,6 @@
 
 namespace Tempest\ResponsiveImage;
 
-use Intervention\Image\Drivers\Gd\Driver;
-use Intervention\Image\ImageManager;
 use Tempest\CommandBus\CommandHandler;
 
 use function Tempest\CommandBus\command;
@@ -12,7 +10,6 @@ final readonly class ResponsiveImageFactory
 {
     public function __construct(
         private ResponsiveImageConfig $config,
-        private ImageManager $imageManager = new ImageManager(new Driver()),
     ) {}
 
     public function create(string $src): Image
@@ -57,7 +54,7 @@ final readonly class ResponsiveImageFactory
     {
         $image = $command->image;
 
-        $scalableImage = $this->imageManager->decodePath($image->srcPath);
+        $scalableImage = $this->config->imageManager->decodePath($image->srcPath);
 
         foreach ($image->srcset as $srcset) {
             $scalableImage = $scalableImage
@@ -75,7 +72,7 @@ final readonly class ResponsiveImageFactory
             return [];
         }
 
-        $scalableImage = $this->imageManager->decodePath($image->srcPath);
+        $scalableImage = $this->config->imageManager->decodePath($image->srcPath);
 
         $width = $scalableImage->width();
 
