@@ -53,4 +53,22 @@ class ImageTest extends TestCase
             $image->html,
         );
     }
+
+    #[Test]
+    public function test_html_with_empty_alt(): void
+    {
+        $image = new Image(
+            src: '/parrot.jpg',
+            srcPath: '/src/parrot.jpg',
+            publicPath: '/public/parrot.jpg',
+            alt: '',
+        );
+
+        $this->assertSame(
+            <<<'HTML'
+            <img src="/parrot.jpg" alt="">
+            HTML,
+            $image->html,
+        );
+    }
 }
