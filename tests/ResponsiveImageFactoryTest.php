@@ -53,7 +53,7 @@ final class ResponsiveImageFactoryTest extends TestCase
 
         $this->assertSame(
             <<<'HTML'
-            <img src="/parrot.jpg" srcset="/parrot-1920-1280.jpg 1920w, /parrot-1606-1070.jpg 1606w, /parrot-1214-809.jpg 1214w, /parrot-607-404.jpg 607w">
+            <img src="/parrot.jpg" width="1920" height="1280" srcset="/parrot-1920-1280.jpg 1920w, /parrot-1606-1070.jpg 1606w, /parrot-1214-809.jpg 1214w, /parrot-607-404.jpg 607w">
             HTML,
             $image->html,
         );
@@ -79,7 +79,7 @@ final class ResponsiveImageFactoryTest extends TestCase
 
         $this->assertSame(
             <<<'HTML'
-            <img src="/parrot.jpg" alt="A parrot" srcset="/parrot-1920-1280.jpg 1920w, /parrot-1606-1070.jpg 1606w, /parrot-1214-809.jpg 1214w, /parrot-607-404.jpg 607w" sizes="(max-width: 1000px) 300px" loading="lazy">
+            <img src="/parrot.jpg" alt="A parrot" width="1920" height="1280" srcset="/parrot-1920-1280.jpg 1920w, /parrot-1606-1070.jpg 1606w, /parrot-1214-809.jpg 1214w, /parrot-607-404.jpg 607w" sizes="(max-width: 1000px) 300px" loading="lazy">
             HTML,
             $image->html,
         );
@@ -125,7 +125,7 @@ final class ResponsiveImageFactoryTest extends TestCase
 
         $this->assertSame(
             <<<'HTML'
-            <img src="/parrot.jpg" srcset="/parrot-1920-1280.jpg 1920w, /parrot-1606-1070.jpg 1606w, /parrot-1214-809.jpg 1214w, /parrot-607-404.jpg 607w">
+            <img src="/parrot.jpg" width="1920" height="1280" srcset="/parrot-1920-1280.jpg 1920w, /parrot-1606-1070.jpg 1606w, /parrot-1214-809.jpg 1214w, /parrot-607-404.jpg 607w">
             HTML,
             $image->html,
         );

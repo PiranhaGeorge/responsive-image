@@ -37,6 +37,8 @@ final readonly class ResponsiveImageFactory
             foreach ($this->getVariations($image) as $srcset) {
                 $image->srcset[] = $srcset;
             }
+
+            [$image->width, $image->height] = $this->getWidthAndHeight($image);
         }
 
         if ($this->config->cache && is_file($image->publicPath)) {
@@ -70,6 +72,17 @@ final readonly class ResponsiveImageFactory
                 ->resize($srcset->width, $srcset->height)
                 ->save($this->config->makePublicPath($srcset->src));
         }
+    }
+
+    /** @return array{0: int, 1: int} */
+    private function getWidthAndHeight(Image $image): array
+    {
+        $scalableImage = $this->config->imageManager->decodePath($image->srcPath);
+
+        return [
+            $scalableImage->width(),
+            $scalableImage->height(),
+        ];
     }
 
     /** @return SrcSet[] */
