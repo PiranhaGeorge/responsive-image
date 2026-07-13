@@ -9,6 +9,8 @@ final class Image
         public string $srcPath,
         public string $publicPath,
         public ?string $alt = null,
+        public ?int $width = null,
+        public ?int $height = null,
         /** @var SrcSet[] */
         public array $srcset = [],
         /** @var Size[] */
@@ -32,6 +34,14 @@ final class Image
 
             if ($this->alt) {
                 $html .= ' alt="' . $this->alt . '"';
+            }
+
+            if ($this->width) {
+                $html .= ' width="' . $this->width . '"';
+            }
+
+            if ($this->height) {
+                $html .= ' height="' . $this->height . '"';
             }
 
             if ($this->srcset !== []) {
