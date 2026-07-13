@@ -130,4 +130,27 @@ final class ResponsiveImageFactoryTest extends TestCase
             $image->html,
         );
     }
+
+    #[Test]
+    public function test_non_scalable_image_does_not_scale(): void
+    {
+        $config = new ResponsiveImageConfig(
+            srcPath: __DIR__ . '/Fixtures/src/',
+            publicPath: __DIR__ . '/Fixtures/public/',
+            async: false,
+        );
+
+        $factory = new ResponsiveImageFactory($config);
+
+        $image = $factory->create('/void.jpegish');
+
+        $this->assertSame('/void.jpegish', $image->src);
+        $this->assertSame([], $image->srcset);
+
+        $this->assertFileExists($config->makePublicPath($image->src));
+
+        $this->assertSame('<img src="/void.jpegish">', $image->html);
+
+        unlink($config->makePublicPath($image->src));
+    }
 }

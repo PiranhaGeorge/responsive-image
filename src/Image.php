@@ -20,14 +20,6 @@ final class Image
         $this->src = '/' . ltrim($this->src, '/');
     }
 
-    public bool $isScalable {
-        get {
-            $extension = pathinfo($this->src, PATHINFO_EXTENSION);
-
-            return in_array($extension, ['jpg', 'jpeg', 'png'], strict: true);
-        }
-    }
-
     public string $html {
         get {
             $html = '<img src="' . $this->src . '"';

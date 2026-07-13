@@ -33,7 +33,7 @@ final readonly class ResponsiveImageFactory
             throw new ImageSourceWasNotFound($image);
         }
 
-        if ($image->isScalable) {
+        if ($this->isScalable($image)) {
             foreach ($this->getVariations($image) as $srcset) {
                 $image->srcset[] = $srcset;
             }
@@ -45,7 +45,7 @@ final readonly class ResponsiveImageFactory
             return $image;
         }
 
-        if ($image->isScalable) {
+        if ($this->isScalable($image)) {
             $this->scale($image);
         }
 
@@ -140,5 +140,15 @@ final readonly class ResponsiveImageFactory
         } else {
             $this->onScaleImage($command);
         }
+    }
+
+    private function isScalable(Image $image): bool
+    {
+        $extension = pathinfo($image->src, PATHINFO_EXTENSION);
+
+        return $this->config
+            ->imageManager
+            ->driver
+            ->supports($extension);
     }
 }
